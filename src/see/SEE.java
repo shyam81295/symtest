@@ -25,13 +25,16 @@ public class SEE {
 
 	private SET mSET;
 
+	/**
+	 * Constructor to check whether cfg is null or not
+	 */
+
 	public SEE(ICFG cfg) throws Exception {
 		if (cfg != null) {
 			this.mSET = new SET(cfg);
 		} else {
 			throw new Exception("Null CFG");
 		}
-
 	}
 
 	public SET getSET() {
@@ -82,7 +85,7 @@ public class SEE {
 				if (newNode == null) {
 					throw new Exception("Dangling Edge");
 				}
-				SETEdge newSETEdge = new SETEdge(mSET, leaf, null);
+				SETEdge newSETEdge = new SETEdge(mSET, leaf, null); // why head is null?
 
 				if (leaf instanceof SETBasicBlockNode) {
 					((SETBasicBlockNode) leaf).setOutgoingEdge(newSETEdge);

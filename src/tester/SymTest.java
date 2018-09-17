@@ -284,6 +284,7 @@ public class SymTest {
 
 	public Set<IEdge> convertTargetEdgesToGraphEdges(Set<ICFEdge> targetEdges)
 			throws Exception {
+		// gets
 		this.mGraph = this.mConvertor.getGraph();
 		Set<IEdge> targets = new HashSet<IEdge>();
 		for (ICFEdge edge : targetEdges) {

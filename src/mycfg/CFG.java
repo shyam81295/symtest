@@ -24,7 +24,9 @@ public class CFG implements ICFG {
 	private Set<ICFEdge> mEdges = new HashSet<ICFEdge>();
 
 	private String mId;
-	
+
+	// what does it do?
+	// Initialises CFG instance with start & end node
 	public CFG(ICFGBasicBlockNode start, ICFGBasicBlockNode stop) throws Exception {
 		this.mStartNode = start;
 		if(start == null || stop == null) {

@@ -56,7 +56,11 @@ public class SET implements IProgram {
 	public SETBasicBlockNode getStartNode() {
 		return this.mStartNode;
 	}
-	
+
+	/**
+	 * Returns the Set of leaf nodes.
+	 * @return mLeafNodeSet
+	 */
 	public Set<SETNode> getLeafNodes() {
 		return this.mLeafNodeSet;
 	}
@@ -148,7 +152,11 @@ public class SET implements IProgram {
 		return this.mVariableSet.contains(var);
 	}
 
-	
+	/**
+	 * This function updates leaf node set by checking if there's no successor, then
+	 * it means it is a leaf node.
+	 * It updates the current leaf node to the mLeafNodeSet.
+	 */
 	public void updateLeafNodeSet() {
 		this.mLeafNodeSet.clear();
 		for(SETNode node : this.getNodeSet()) {

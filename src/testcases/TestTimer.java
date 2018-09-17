@@ -36,7 +36,8 @@ public class TestTimer {
 		ICFGBasicBlockNode A = new CFGBasicBlockNode("A",null);
 		ICFGBasicBlockNode W = new CFGBasicBlockNode("W",null);
 		mCFG = new CFG(A, W);
-		
+//		System.out.println(mCFG);
+
 		//constants
 		ConcreteConstant constant_zero = new ConcreteConstant(0, mCFG);
 		ConcreteConstant constant_one = new ConcreteConstant(1, mCFG);
@@ -47,8 +48,8 @@ public class TestTimer {
 
 		Variable x5 = new Variable("x5", mCFG);
 		Variable start = new Variable("start", mCFG);
-		//Statement stmt1 = new Statement(mCFG, start, constant_zero);
-		//B.addStatement(stmt1);
+		Statement stmt1 = new Statement(mCFG, start, constant_zero);
+		B.addStatement(stmt1);
 		
 		Variable prev_start = new Variable("prev_start", mCFG);
 		Statement stmt2 = new Statement(mCFG, prev_start, constant_zero);
