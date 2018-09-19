@@ -1,14 +1,12 @@
 package testcases;
 
-import cfg.ICFEdge;
-import cfg.ICFG;
-import cfg.ICFGBasicBlockNode;
-import cfg.ICFGDecisionNode;
+import cfg.*;
 import expression.*;
 import mycfg.CFEdge;
 import mycfg.CFG;
 import mycfg.CFGBasicBlockNode;
 import mycfg.CFGDecisionNode;
+import mygraph.Node;
 import org.junit.Test;
 import statement.Statement;
 import tester.SymTest;
@@ -59,7 +57,7 @@ public class TestAddition {
         Statement stmt1 = new Statement(mCFG, x, i1);
         B.addStatement(stmt1);
         Input i2 = new Input(mCFG);
-        Statement stmt2 = new Statement(mCFG, x, i1);
+        Statement stmt2 = new Statement(mCFG, y, i2);
         B.addStatement(stmt2);
         mCFG.addBasicBlockNode(B);
 
@@ -113,7 +111,10 @@ public class TestAddition {
         ICFEdge FG = new CFEdge("FG", mCFG, F, G);
         ICFEdge FH = new CFEdge("FH", mCFG, F, H);
         ICFEdge HI = new CFEdge("HI", mCFG, H, I);
+        //  Nodes which are not connected to anyone will get connected to end node automatically.
         ICFEdge IW = new CFEdge("IW", mCFG, I, W);
+        ICFEdge GW = new CFEdge("GW", mCFG, G, W);
+
         mCFG.addEdge(AB);
         mCFG.addEdge(BC);
         mCFG.addEdge(CD);
@@ -124,6 +125,7 @@ public class TestAddition {
         mCFG.addEdge(FH);
         //mCFG.addEdge(HI);
         mCFG.addEdge(IW);
+        mCFG.addEdge(GW);
 
         //Looping Edge
         ICFEdge WB = new CFEdge("WB", mCFG, W, B);
@@ -132,7 +134,7 @@ public class TestAddition {
 
         //Target Edges
         Set<ICFEdge> targets = new HashSet<ICFEdge>();
-        targets.add(EH);
+        targets.add(FG);
 //		targets.add(DE);
 //		targets.add(EG);
 //        targets.add(GH);
@@ -145,7 +147,15 @@ public class TestAddition {
         TestSequence seq = st.generateTestSequence();
         Map<IIdentifier, List<Object>> testseq = seq.getTestSequence();
 
-
+//        ICFGBasicBlockNode start = mCFG.getStartNode();
+//        ICFGBasicBlockNode end = mCFG.getStopNode();
+//        Set<ICFEdge> EdgeSet = mCFG.getEdgeSet();
+//        Set<ICFGNode> NodeSet = mCFG.getNodeSet();
+//
+//        System.out.println(start);
+//        System.out.println(end);
+//        System.out.println(EdgeSet);
+//        System.out.println(NodeSet);
 
 
 
