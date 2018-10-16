@@ -49,6 +49,9 @@ public class SEE {
 	 */
 	public void expandSET(List<ICFEdge> cfgEdges) throws Exception {
 		for (ICFEdge edge : cfgEdges) {
+			/* Shyam added below line */
+			System.out.println(edge);
+			/* Shyam added above line */
 			singlestep(edge);
 		}
 	}

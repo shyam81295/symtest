@@ -38,6 +38,13 @@ public class SymTestUtil {
 		SETNode leaf = leaves.iterator().next();
 
 		IExpression exp = leaf.getPathPredicate();
+		/**
+		 * Changed by Shyam - only next line
+		 */
+
+//		System.out.println(exp);
+
+
 		System.out.println("path predicate = " + exp.toString());
 		Set<IIdentifier> symVars = set.getVariables();
 		// Using SMT Solver

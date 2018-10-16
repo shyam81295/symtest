@@ -1,21 +1,29 @@
 package testcases;
 
+import Solver.ISolver;
+import Solver.SolverResult;
+import Solver.YicesSolver;
+import Solver.Z3Solver;
 import cfg.*;
 import expression.*;
 import mycfg.CFEdge;
 import mycfg.CFG;
 import mycfg.CFGBasicBlockNode;
 import mycfg.CFGDecisionNode;
+import mygraph.Edge;
 import mygraph.Node;
 import org.junit.Test;
+import see.SEE;
+import set.SET;
+import set.SETBasicBlockNode;
+import set.SETEdge;
+import set.SETNode;
 import statement.Statement;
 import tester.SymTest;
+import tester.SymTestUtil;
 import tester.TestSequence;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class TestAddition {
     @Test
@@ -106,35 +114,40 @@ public class TestAddition {
         ICFEdge BC = new CFEdge("BC", mCFG, B, C);
         ICFEdge CD = new CFEdge("CD", mCFG, C, D);
         ICFEdge DE = new CFEdge("DE", mCFG, D, E);
-        ICFEdge EF = new CFEdge("EF", mCFG, E, F);
-        ICFEdge EH = new CFEdge("EH", mCFG, E, H);
-        ICFEdge FG = new CFEdge("FG", mCFG, F, G);
-        ICFEdge FH = new CFEdge("FH", mCFG, F, H);
-        ICFEdge HI = new CFEdge("HI", mCFG, H, I);
-        //  Nodes which are not connected to anyone will get connected to end node automatically.
-        ICFEdge IW = new CFEdge("IW", mCFG, I, W);
-        ICFEdge GW = new CFEdge("GW", mCFG, G, W);
+//        ICFEdge EF = new CFEdge("EF", mCFG, E, F);
+//        ICFEdge EH = new CFEdge("EH", mCFG, E, H);
+//        ICFEdge FG = new CFEdge("FG", mCFG, F, G);
+//        ICFEdge FH = new CFEdge("FH", mCFG, F, H);
+//        ICFEdge HI = new CFEdge("HI", mCFG, H, I);
+//        //  Nodes which are not connected to anyone will get connected to end node automatically.
+//        ICFEdge IW = new CFEdge("IW", mCFG, I, W);
+//        ICFEdge HW = new CFEdge("HW", mCFG, H, W);
+        ICFEdge DW = new CFEdge("DW", mCFG, D, W);
+        ICFEdge EW = new CFEdge("EW", mCFG, E, W);
 
-        mCFG.addEdge(AB);
-        mCFG.addEdge(BC);
-        mCFG.addEdge(CD);
-        //mCFG.addEdge(DE);
-        mCFG.addEdge(EF);
-        mCFG.addEdge(EH);
-        mCFG.addEdge(FG);
-        mCFG.addEdge(FH);
-        //mCFG.addEdge(HI);
-        mCFG.addEdge(IW);
-        mCFG.addEdge(GW);
+
+//        mCFG.addEdge(AB);
+//        mCFG.addEdge(BC);
+//        mCFG.addEdge(CD);
+//        //mCFG.addEdge(DE);
+//        mCFG.addEdge(EF);
+//        //mCFG.addEdge(EH);
+//        mCFG.addEdge(FG);
+//        mCFG.addEdge(FH);
+//        //mCFG.addEdge(HI);
+//        mCFG.addEdge(IW);
+//        mCFG.addEdge(HW);
+//        mCFG.addEdge(DW);
 
         //Looping Edge
-        ICFEdge WB = new CFEdge("WB", mCFG, W, B);
-        mCFG.addEdge(WB);
+//        ICFEdge WB = new CFEdge("WB", mCFG, W, B);
+//        mCFG.addEdge(WB);
         // decision edges
 
         //Target Edges
-        Set<ICFEdge> targets = new HashSet<ICFEdge>();
-        targets.add(FG);
+//        Set<ICFEdge> targets = new HashSet<ICFEdge>();
+//        targets.add(DE);
+//        targets.add(FH);
 //		targets.add(DE);
 //		targets.add(EG);
 //        targets.add(GH);
@@ -143,21 +156,87 @@ public class TestAddition {
 //		targets.add(IJ);
 //        targets.add(IK);
 
-        SymTest st = new SymTest(mCFG, targets);
-        TestSequence seq = st.generateTestSequence();
-        Map<IIdentifier, List<Object>> testseq = seq.getTestSequence();
-
+//        SymTest st = new SymTest(mCFG, targets);
+//        TestSequence seq = st.generateTestSequence();
+//        Map<IIdentifier, List<Object>> testseq = seq.getTestSequence();
+//
+//
 //        ICFGBasicBlockNode start = mCFG.getStartNode();
 //        ICFGBasicBlockNode end = mCFG.getStopNode();
 //        Set<ICFEdge> EdgeSet = mCFG.getEdgeSet();
 //        Set<ICFGNode> NodeSet = mCFG.getNodeSet();
-//
+
+//        for(ICFEdge edge:EdgeSet){
+//            System.out.println(edge.getId());
+//        }
+
 //        System.out.println(start);
 //        System.out.println(end);
 //        System.out.println(EdgeSet);
 //        System.out.println(NodeSet);
 
+        SymTestUtil symTestUtil = new SymTestUtil();
+        List<ICFEdge> path = new ArrayList<>();
+        path.add(AB);
+        path.add(BC);
+        path.add(CD);
+        path.add(DE);
+        path.add(EW);
+
+//        path.add(EF);
+//        path.add(FH);
+//        path.add(HI);
+//        path.add(IW);
+//
+        SET set = symTestUtil.getSET(path,mCFG);
+
+        set.updateLeafNodeSet();
+        Set<SETNode> leaves = set.getLeafNodes();
+        if (leaves.size() != 1) {
+            Exception e = new Exception(
+                    "SymTest.generateTestSequence : SET should have 1 and only 1 leaf. It has "
+                            + leaves.size());
+            throw e;
+        }
+
+        // The check for leaves(Set) having a single node is already done.
+        SETNode leaf = leaves.iterator().next();
+
+        IExpression exp = leaf.getPathPredicate();
+
+        System.out.println("path predicate = " + exp.toString());
+
+        Set<IIdentifier> symVars = set.getVariables();
+        // Using SMT Solver
+        ISolver solver = new Z3Solver(symVars, exp);
+
+        SolverResult solution = solver.solve();
 
 
+
+//        SETBasicBlockNode startNode = set.getStartNode();
+//        List<SETEdge> outgoingEdgeList = startNode.getOutgoingEdgeList();
+//
+//        Set<SETNode> nodeSet = set.getNodeSet();
+//        for(SETNode node:nodeSet){
+//            System.out.println(node.getCFGNode());
+//        }
+//        System.out.println();
+
+//        System.out.println(startNode.getOutgoingEdgeList());
+
+
+//
+//        Set<IIdentifier> identifiers = set.getVariables();
+//
+//        TestSequence ts = new TestSequence(identifiers);
+//
+//        for(IIdentifier i : identifiers){
+//            ts.toString();
+//        }
+//
+//        System.out.println(set.getVariables());
+
+//        System.out.println(set);
     }
 }
