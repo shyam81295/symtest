@@ -24,7 +24,7 @@ import java.util.*;
 
 public class TestNewSEE {
     @Test
-    public void testAddition() throws Exception{
+    public void additionKaTest() throws Exception{
 
         System.out.println("Test case started\n\n");
 
@@ -71,10 +71,10 @@ public class TestNewSEE {
 
         //decision nodes
         //  x>4
+
         GreaterThanExpression expr2 = new GreaterThanExpression(mCFG, x, CONSTANT_FOUR );
         ICFGDecisionNode D = new CFGDecisionNode("D", mCFG, expr2);
         mCFG.addDecisionNode(D);
-
 
         ICFGBasicBlockNode E = new CFGBasicBlockNode("E", mCFG);
         // Input i1 = new Input(mCFG);
@@ -153,17 +153,30 @@ public class TestNewSEE {
         ICFGBasicBlockNode icfgBasicBlockNodeC = C;
         ICFGBasicBlockNode icfgBasicBlockNodeE = E;
         ICFGBasicBlockNode icfgBasicBlockNodeF = F;
-        //ICFGDecisionNode icfgDecisionNodeD = D;
+        ICFGDecisionNode icfgDecisionNodeD = D;
 
-        List<ICFGBasicBlockNode> nodes = new ArrayList<>();
+//        System.out.println(D.getCondition());
+
+        List<ICFGNode> nodes = new ArrayList<>();
         nodes.add(B);
         nodes.add(C);
-//        nodes.add(D);
+        nodes.add(D);
         nodes.add(E);
         nodes.add(F);
 
-        for(ICFGBasicBlockNode icfgNode:nodes) {
-            SETNode setNode = new SETBasicBlockNode(set, icfgNode);
+        for(ICFGNode icfgNode:nodes) {
+            System.out.println("fir se sssys");
+            //SETNode setNode = new SETBasicBlockNode(set, (ICFGBasicBlockNode)icfgNode);
+          SETNode setNode;// = new SETBasicBlockNode(set, (ICFGBasicBlockNode)icfgNode);
+            if(icfgNode instanceof ICFGBasicBlockNode){
+                 setNode = new SETBasicBlockNode(set, (ICFGBasicBlockNode)icfgNode);
+            }
+            else if(icfgNode instanceof ICFGDecisionNode){
+                 setNode = new SETDecisionNode (((ICFGDecisionNode) icfgNode).getCondition(),set, (ICFGDecisionNode)icfgNode);
+            }
+            else{
+                 setNode = new SETBasicBlockNode(set, (ICFGBasicBlockNode)icfgNode);
+            }
             SETNode setNode2;
             setNode2 = seeNew.singleStep(icfgNode, setNode);
 
